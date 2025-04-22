@@ -9,15 +9,12 @@ namespace ProjectE.Entity.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        public string UserId { get; set; }     // Teklif isteyen müşteri
-        public string CompanyId { get; set; }  // Teklif veren firma
-
+        public string UserId { get; set; }
+        public string CompanyId { get; set; }  // Firma bu teklife teklif verdiğinde dolacak
+        public string Title { get; set; }
         public string Description { get; set; }
-
-        public decimal? Price { get; set; }
-
+        public decimal? Budget { get; set; }
         public bool IsApprovedByAdmin { get; set; } = false;
-
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
