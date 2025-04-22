@@ -1,3 +1,5 @@
+using ProjectE.Business.Abstract;
+using ProjectE.Business.Concrete;
 using ProjectE.DataAccess.Context;
 using ProjectE.DataAccess.Settings;
 
@@ -9,6 +11,7 @@ builder.Services.Configure<MongoDbSettings>(
 
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddControllers();
+builder.Services.AddScoped<IAuthService, AuthManager>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

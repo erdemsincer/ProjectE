@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ProjectE.DataAccess\ProjectE.DataAccess.csproj" />
     <ProjectReference Include="..\ProjectE.DTO\ProjectE.DTO.csproj" />
     <ProjectReference Include="..\ProjectE.Entity\ProjectE.Entity.csproj" />
