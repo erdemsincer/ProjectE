@@ -45,5 +45,26 @@ namespace ProjectE.Business.Concrete
                 IsApprovedByAdmin = o.IsApprovedByAdmin
             }).ToList();
         }
+
+        public async Task<List<ResultOfferDto>> GetOffersForCompanyAsync(string companyId, bool isAdvertiser)
+        {
+            var offers = await _offers.Find(_ => true).ToListAsync();
+
+            // Reklamlı firma ise tüm teklifleri öncelikli görebilir
+            // (şimdilik sıralama yapılmıyor, ama mantık kuruldu)
+
+            return offers.Select(o => new ResultOfferDto
+            {
+                Id = o.Id,
+                UserId = o.UserId,
+                CompanyId = o.CompanyId,
+                Title = o.Title,
+                Description = o.Description,
+                Budget = o.Budget,
+                IsApprovedByAdmin = o.IsApprovedByAdmin,
+                CreatedAt = o.CreatedAt
+            }).ToList();
+        }
+
     }
 }
