@@ -17,6 +17,8 @@ namespace ProjectE.Entity.Entities
 
         public string Description { get; set; }
 
+        public string PasswordHash { get; set; }
+
         public List<string> ReferenceProjects { get; set; } = new();
 
         public string SubscriptionType { get; set; }  // Örn: Basic, Pro
