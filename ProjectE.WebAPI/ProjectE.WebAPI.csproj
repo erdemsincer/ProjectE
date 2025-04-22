@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectE.Business\ProjectE.Business.csproj" />
+    <ProjectReference Include="..\ProjectE.DataAccess\ProjectE.DataAccess.csproj" />
+    <ProjectReference Include="..\ProjectE.DTO\ProjectE.DTO.csproj" />
+    <ProjectReference Include="..\ProjectE.Entity\ProjectE.Entity.csproj" />
+  </ItemGroup>
+
+</Project>
