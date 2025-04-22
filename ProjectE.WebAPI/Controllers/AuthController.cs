@@ -23,10 +23,13 @@ namespace ProjectE.WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
+       
+        public async Task<IActionResult> Login(LoginUserDto dto)
         {
-            var result = await _authService.LoginAsync(dto);
-            return Ok(new { message = result });
+            var token = await _authService.LoginAsync(dto);
+            if (token == null) return Unauthorized("Hatalı giriş.");
+
+            return Ok(new { token });
         }
     }
 }

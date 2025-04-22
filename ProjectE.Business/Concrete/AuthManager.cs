@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using Org.BouncyCastle.Crypto.Generators;
 using ProjectE.Business.Abstract;
+using ProjectE.Business.Helpers;
 using ProjectE.DataAccess.Context;
 using ProjectE.DTO.UserDtos;
 using ProjectE.Entity.Entities;
@@ -10,10 +11,12 @@ namespace ProjectE.Business.Concrete
     public class AuthManager : IAuthService
     {
         private readonly IMongoCollection<User> _users;
+        private readonly TokenGenerator _tokenGenerator;
 
-        public AuthManager(MongoDbContext context)
+        public AuthManager(MongoDbContext context,TokenGenerator tokenGenerator)
         {
             _users = context.Users;
+            _tokenGenerator = tokenGenerator;
         }
 
         public async Task<string> RegisterAsync(RegisterUserDto dto)
@@ -38,14 +41,11 @@ namespace ProjectE.Business.Concrete
         public async Task<string> LoginAsync(LoginUserDto dto)
         {
             var user = await _users.Find(x => x.Email == dto.Email).FirstOrDefaultAsync();
-            if (user == null)
-                return "Kullanıcı bulunamadı.";
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+                return null;
 
-            var isValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
-            if (!isValid)
-                return "Şifre hatalı.";
-
-            return "Giriş başarılı.";
+            var token = _tokenGenerator.GenerateToken(user);
+            return token;
         }
     }
 }
