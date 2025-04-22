@@ -47,6 +47,8 @@ builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<IAuthService, AuthManager>();
 builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<ICompanyAuthService, CompanyAuthManager>();
+builder.Services.AddScoped<ICompanyService, CompanyManager>();
+
 
 
 // Swagger with JWT Support

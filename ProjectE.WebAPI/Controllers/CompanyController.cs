@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectE.Business.Abstract;
 using ProjectE.DTO.CompanyDtos;
+using System.Security.Claims;
 
 namespace ProjectE.WebAPI.Controllers
 {
@@ -10,10 +12,12 @@ namespace ProjectE.WebAPI.Controllers
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyAuthService _companyAuthService;
+        private readonly ICompanyService _companyService;
 
-        public CompanyController(ICompanyAuthService companyAuthService)
+        public CompanyController(ICompanyAuthService companyAuthService, ICompanyService companyService)
         {
             _companyAuthService = companyAuthService;
+            _companyService = companyService;
         }
 
         [HttpPost("register")]
@@ -31,6 +35,27 @@ namespace ProjectE.WebAPI.Controllers
                 return Unauthorized("E-posta veya şifre hatalı");
 
             return Ok(new { token });
+        }
+        [Authorize]
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var companyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var profile = await _companyService.GetCompanyProfileAsync(companyId);
+
+            if (profile == null)
+                return NotFound();
+
+            return Ok(profile);
+        }
+
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateCompanyDto dto)
+        {
+            var companyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _companyService.UpdateCompanyProfileAsync(dto, companyId);
+            return Ok(new { message = result });
         }
     }
 }
