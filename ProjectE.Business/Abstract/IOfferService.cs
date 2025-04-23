@@ -8,6 +8,8 @@ namespace ProjectE.Business.Abstract
         Task<List<ResultOfferDto>> GetAllOffersAsync(); // Tüm teklifleri getir (şimdilik admin/firma için)
         Task<List<ResultOfferDto>> GetOffersForCompanyAsync(string companyId, bool isAdvertiser);
         Task<string> AssignCompanyToOfferAsync(string offerId, string companyId);
+        Task<List<ResultOfferDto>> GetOffersByUserAsync(string userId);
+
 
 
     }

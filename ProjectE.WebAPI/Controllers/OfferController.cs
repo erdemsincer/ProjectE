@@ -65,5 +65,15 @@ namespace ProjectE.WebAPI.Controllers
             return Ok(new { message = result });
         }
 
+        [Authorize]
+        [HttpGet("my-offers")]
+        public async Task<IActionResult> GetMyOffers()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var offers = await _offerService.GetOffersByUserAsync(userId);
+            return Ok(offers);
+        }
+
+
     }
 }

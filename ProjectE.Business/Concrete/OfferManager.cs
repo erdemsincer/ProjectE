@@ -82,6 +82,24 @@ namespace ProjectE.Business.Concrete
             return "Teklif başarıyla firmaya atandı.";
         }
 
+        public async Task<List<ResultOfferDto>> GetOffersByUserAsync(string userId)
+        {
+            var offers = await _offers.Find(x => x.UserId == userId).ToListAsync();
+
+            return offers.Select(o => new ResultOfferDto
+            {
+                Id = o.Id,
+                UserId = o.UserId,
+                CompanyId = o.CompanyId,
+                Title = o.Title,
+                Description = o.Description,
+                Budget = o.Budget,
+                IsApprovedByAdmin = o.IsApprovedByAdmin,
+                CreatedAt = o.CreatedAt
+            }).ToList();
+        }
+
+
 
     }
 }
