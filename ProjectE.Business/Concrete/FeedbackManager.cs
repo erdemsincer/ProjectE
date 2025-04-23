@@ -112,6 +112,20 @@ namespace ProjectE.Business.Concrete
 
             return "Firma cevabı eklendi.";
         }
+        public async Task<string> DeleteFeedbackByUserAsync(string feedbackId, string userId)
+        {
+            var feedback = await _feedbacks.Find(x => x.Id == feedbackId).FirstOrDefaultAsync();
+
+            if (feedback == null)
+                return "Yorum bulunamadı.";
+
+            if (feedback.UserId != userId)
+                return "Bu yorumu silme yetkiniz yok.";
+
+            var result = await _feedbacks.DeleteOneAsync(x => x.Id == feedbackId);
+            return result.DeletedCount > 0 ? "Yorum silindi." : "Silinemedi.";
+        }
+
 
 
 
