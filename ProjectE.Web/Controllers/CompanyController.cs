@@ -28,7 +28,7 @@ namespace ProjectE.Web.Controllers
             var json = JsonConvert.SerializeObject(dto);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("https://localhost:7128/api/companyauth/login", content);
+            var response = await client.PostAsync("https://localhost:7034/api/companyauth/login", content);
 
             if (!response.IsSuccessStatusCode)
             {

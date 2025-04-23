@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Kullanıcı Paneli";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var token = Context.Session.GetString("token");
+}
+
+@if (string.IsNullOrEmpty(token))
+{
+    <script>
+        window.location.href = "/Account/Login";
+    </script>
+}
+else
+{
+    <div class="container mt-5">
+        <div class="text-center">
+            <h2 class="mb-3">🎉 Hoş geldin kullanıcı!</h2>
+            <p class="lead">Buradan tekliflerini ve yorumlarını yönetebilirsin.</p>
+
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <a href="/Offer/MyOffers" class="btn btn-outline-primary btn-lg">
+                    <i class="fa-solid fa-hand-holding-dollar me-1"></i> Tekliflerim
+                </a>
+                <a href="/Feedback/MyComments" class="btn btn-outline-success btn-lg">
+                    <i class="fa-solid fa-comments me-1"></i> Yorumlarım
+                </a>
+                <a href="/Account/Logout" class="btn btn-outline-danger btn-lg">
+                    <i class="fa-solid fa-right-from-bracket me-1"></i> Çıkış Yap
+                </a>
+            </div>
+        </div>
+    </div>
+}
