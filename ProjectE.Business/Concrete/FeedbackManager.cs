@@ -142,6 +142,23 @@ namespace ProjectE.Business.Concrete
                 FeedbackReply = f.FeedbackReply
             }).ToList();
         }
+        public async Task<List<ResultFeedbackDto>> GetAllFeedbacksAsync()
+        {
+            var feedbacks = await _feedbacks.Find(_ => true).ToListAsync();
+
+            return feedbacks.Select(f => new ResultFeedbackDto
+            {
+                Id = f.Id,
+                OfferId = f.OfferId,
+                UserId = f.UserId,
+                CompanyId = f.CompanyId,
+                Comment = f.Comment,
+                Rating = f.Rating,
+                CreatedAt = f.CreatedAt,
+                FeedbackReply = f.FeedbackReply
+            }).ToList();
+        }
+
 
 
 

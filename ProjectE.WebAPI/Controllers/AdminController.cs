@@ -34,6 +34,14 @@ namespace ProjectE.WebAPI.Controllers
             var result = await _feedbackService.DeleteFeedbackByIdAsync(feedbackId);
             return Ok(new { message = result });
         }
+        [Authorize] // İleride Role = "Admin" filtresi eklenebilir
+        [HttpGet("feedbacks")]
+        public async Task<IActionResult> GetAllFeedbacks()
+        {
+            var feedbacks = await _feedbackService.GetAllFeedbacksAsync();
+            return Ok(feedbacks);
+        }
+
 
     }
 }
