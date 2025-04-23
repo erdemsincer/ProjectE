@@ -11,6 +11,8 @@ namespace ProjectE.Business.Abstract
         Task<string> UpdateFeedbackAsync(UpdateFeedbackDto dto, string userId);
         Task<string> ReplyToFeedbackAsync(ReplyToFeedbackDto dto, string companyId);
         Task<string> DeleteFeedbackByUserAsync(string feedbackId, string userId);
+        Task<List<ResultFeedbackDto>> GetFeedbacksByUserAsync(string userId);
+
 
 
 

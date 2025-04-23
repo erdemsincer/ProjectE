@@ -69,6 +69,15 @@ namespace ProjectE.WebAPI.Controllers
             var result = await _feedbackService.DeleteFeedbackByUserAsync(feedbackId, userId);
             return Ok(new { message = result });
         }
+        [Authorize]
+        [HttpGet("my-feedbacks")]
+        public async Task<IActionResult> GetMyFeedbacks()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var feedbacks = await _feedbackService.GetFeedbacksByUserAsync(userId);
+            return Ok(feedbacks);
+        }
+
 
 
 

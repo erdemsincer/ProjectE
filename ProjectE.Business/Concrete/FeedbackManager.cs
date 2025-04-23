@@ -126,6 +126,22 @@ namespace ProjectE.Business.Concrete
             var result = await _feedbacks.DeleteOneAsync(x => x.Id == feedbackId);
             return result.DeletedCount > 0 ? "Yorum silindi." : "Silinemedi.";
         }
+        public async Task<List<ResultFeedbackDto>> GetFeedbacksByUserAsync(string userId)
+        {
+            var feedbacks = await _feedbacks.Find(x => x.UserId == userId).ToListAsync();
+
+            return feedbacks.Select(f => new ResultFeedbackDto
+            {
+                Id = f.Id,
+                OfferId = f.OfferId,
+                UserId = f.UserId,
+                CompanyId = f.CompanyId,
+                Comment = f.Comment,
+                Rating = f.Rating,
+                CreatedAt = f.CreatedAt,
+                FeedbackReply = f.FeedbackReply
+            }).ToList();
+        }
 
 
 
