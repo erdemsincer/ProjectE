@@ -14,10 +14,12 @@ namespace ProjectE.Business.Concrete
     public class CompanyManager : ICompanyService
     {
         private readonly IMongoCollection<Company> _companies;
+        private readonly IFeedbackService _feedbackService;
 
-        public CompanyManager(MongoDbContext context)
+        public CompanyManager(MongoDbContext context, IFeedbackService feedbackService)
         {
             _companies = context.Companies;
+            _feedbackService = feedbackService;
         }
 
         public async Task<UpdateCompanyDto> GetCompanyProfileAsync(string companyId)
@@ -47,5 +49,33 @@ namespace ProjectE.Business.Concrete
 
             return "Firma profili güncellendi.";
         }
+        public async Task<List<ResultCompanyDto>> GetAllCompaniesSortedAsync()
+        {
+            var companies = await _companies.Find(_ => true).ToListAsync();
+            var result = new List<ResultCompanyDto>();
+
+            foreach (var company in companies)
+            {
+                var averageRating = await _feedbackService.GetCompanyAverageRatingAsync(company.Id);
+
+                result.Add(new ResultCompanyDto
+                {
+                    Id = company.Id,
+                    CompanyName = company.CompanyName,
+                    Email = company.Email,
+                    PhoneNumber = company.PhoneNumber,
+                    Description = company.Description,
+                    IsAdvertiser = company.IsAdvertiser,
+                    AverageRating = averageRating
+                });
+            }
+
+            return result
+                .OrderByDescending(c => c.IsAdvertiser)
+                .ThenByDescending(c => c.AverageRating)
+                .ToList();
+        }
+
+
     }
 }

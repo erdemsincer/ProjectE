@@ -57,5 +57,13 @@ namespace ProjectE.WebAPI.Controllers
             var result = await _companyService.UpdateCompanyProfileAsync(dto, companyId);
             return Ok(new { message = result });
         }
+        [AllowAnonymous]
+        [HttpGet("sorted")]
+        public async Task<IActionResult> GetSortedCompanies()
+        {
+            var companies = await _companyService.GetAllCompaniesSortedAsync();
+            return Ok(companies);
+        }
+
     }
 }

@@ -6,5 +6,11 @@ namespace ProjectE.Business.Abstract
     {
         Task<UpdateCompanyDto> GetCompanyProfileAsync(string companyId);
         Task<string> UpdateCompanyProfileAsync(UpdateCompanyDto dto, string companyId);
+        Task<List<ResultCompanyDto>> GetAllCompaniesSortedAsync();
+        
+
+
+
+
     }
 }
