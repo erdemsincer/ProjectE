@@ -8,6 +8,10 @@ namespace ProjectE.Business.Abstract
         Task<List<ResultFeedbackDto>> GetFeedbacksByCompanyIdAsync(string companyId);
         Task<double> GetCompanyAverageRatingAsync(string companyId);
         Task<string> DeleteFeedbackByIdAsync(string feedbackId);
+        Task<string> UpdateFeedbackAsync(UpdateFeedbackDto dto, string userId);
+        Task<string> ReplyToFeedbackAsync(ReplyToFeedbackDto dto, string companyId);
+
+
 
     }
 }

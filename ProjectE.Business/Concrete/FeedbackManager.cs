@@ -78,6 +78,43 @@ namespace ProjectE.Business.Concrete
                 : "Yorum bulunamadı.";
         }
 
+        public async Task<string> UpdateFeedbackAsync(UpdateFeedbackDto dto, string userId)
+        {
+            var feedback = await _feedbacks.Find(x => x.Id == dto.FeedbackId).FirstOrDefaultAsync();
+            if (feedback == null)
+                return "Yorum bulunamadı.";
+
+            if (feedback.UserId != userId)
+                return "Bu yorumu güncelleme yetkiniz yok.";
+
+            var update = Builders<Feedback>.Update
+                .Set(x => x.Comment, dto.Comment)
+                .Set(x => x.Rating, dto.Rating);
+
+            await _feedbacks.UpdateOneAsync(x => x.Id == dto.FeedbackId, update);
+
+            return "Yorum güncellendi.";
+        }
+        public async Task<string> ReplyToFeedbackAsync(ReplyToFeedbackDto dto, string companyId)
+        {
+            var feedback = await _feedbacks.Find(x => x.Id == dto.FeedbackId).FirstOrDefaultAsync();
+
+            if (feedback == null)
+                return "Yorum bulunamadı.";
+
+            if (feedback.CompanyId != companyId)
+                return "Bu yoruma cevap yazamazsınız.";
+
+            var update = Builders<Feedback>.Update
+                .Set(x => x.FeedbackReply, dto.Reply);
+
+            await _feedbacks.UpdateOneAsync(x => x.Id == dto.FeedbackId, update);
+
+            return "Firma cevabı eklendi.";
+        }
+
+
+
 
     }
 }

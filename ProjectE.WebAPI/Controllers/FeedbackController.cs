@@ -45,5 +45,24 @@ namespace ProjectE.WebAPI.Controllers
             return Ok(new { averageRating = rating });
         }
 
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateFeedback([FromBody] UpdateFeedbackDto dto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _feedbackService.UpdateFeedbackAsync(dto, userId);
+            return Ok(new { message = result });
+        }
+        [Authorize]
+        [HttpPost("reply")]
+        public async Task<IActionResult> ReplyToFeedback([FromBody] ReplyToFeedbackDto dto)
+        {
+            var companyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _feedbackService.ReplyToFeedbackAsync(dto, companyId);
+            return Ok(new { message = result });
+        }
+
+
+
     }
 }

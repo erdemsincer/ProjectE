@@ -15,6 +15,7 @@ namespace ProjectE.Entity.Entities
 
         public string Comment { get; set; }
         public int Rating { get; set; }         // 1-5 arası puan
+        public string FeedbackReply { get; set; } = null;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
