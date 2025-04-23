@@ -6,5 +6,6 @@ namespace ProjectE.Business.Abstract
     {
         Task<string> CreateFeedbackAsync(CreateFeedbackDto dto, string userId);
         Task<List<ResultFeedbackDto>> GetFeedbacksByCompanyIdAsync(string companyId);
+        Task<double> GetCompanyAverageRatingAsync(string companyId);
     }
 }

@@ -7,6 +7,8 @@
         public string UserId { get; set; }
         public string CompanyId { get; set; }
         public string Comment { get; set; }
+        public double AverageRating { get; set; }
+
         public int Rating { get; set; }
         public DateTime CreatedAt { get; set; }
     }

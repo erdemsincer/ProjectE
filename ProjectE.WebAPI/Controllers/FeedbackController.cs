@@ -36,5 +36,14 @@ namespace ProjectE.WebAPI.Controllers
             var feedbacks = await _feedbackService.GetFeedbacksByCompanyIdAsync(companyId);
             return Ok(feedbacks);
         }
+
+        [AllowAnonymous]
+        [HttpGet("company/{companyId}/average-rating")]
+        public async Task<IActionResult> GetAverageRating(string companyId)
+        {
+            var rating = await _feedbackService.GetCompanyAverageRatingAsync(companyId);
+            return Ok(new { averageRating = rating });
+        }
+
     }
 }
