@@ -52,6 +52,8 @@ builder.Services.AddScoped<ICompanyService, CompanyManager>();
 builder.Services.AddScoped<IOfferService, OfferManager>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionManager>();
 builder.Services.AddHostedService<SubscriptionExpirationService>();
+builder.Services.AddScoped<IFeedbackService, FeedbackManager>();
+
 
 
 
