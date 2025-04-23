@@ -1,0 +1,36 @@
+﻿@model List<ProjectE.DTO.FeedbackDtos.ResultFeedbackDto>
+@{
+    ViewData["Title"] = "Yorumlarım";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🗨️ Yorumlarım</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">Henüz yorum yapmamışsınız.</div>
+    }
+    else
+    {
+        <div class="list-group">
+            @foreach (var f in Model)
+            {
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-1">"@f.Comment"</h5>
+                        <span class="badge bg-primary">⭐ @f.Rating</span>
+                    </div>
+                    <small class="text-muted">Tarih: @f.CreatedAt.ToShortDateString()</small><br />
+
+                    @if (!string.IsNullOrEmpty(f.FeedbackReply))
+                    {
+                        <div class="mt-2 ps-3 border-start border-3 border-success">
+                            <strong>Firma Cevabı:</strong> @f.FeedbackReply
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>
