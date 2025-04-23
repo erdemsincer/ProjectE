@@ -24,7 +24,7 @@ namespace ProjectE.Business.Concrete
                 Description = dto.Description,
                 Budget = dto.Budget,
                 IsApprovedByAdmin = false,
-                 CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow
             };
 
             await _offers.InsertOneAsync(offer);
@@ -65,6 +65,23 @@ namespace ProjectE.Business.Concrete
                 CreatedAt = o.CreatedAt
             }).ToList();
         }
+
+        public async Task<string> AssignCompanyToOfferAsync(string offerId, string companyId)
+        {
+            var offer = await _offers.Find(x => x.Id == offerId).FirstOrDefaultAsync();
+            if (offer == null)
+                return "Teklif bulunamadı.";
+
+            if (!string.IsNullOrEmpty(offer.CompanyId))
+                return "Bu teklif zaten başka bir firmaya atanmış.";
+
+            offer.CompanyId = companyId;
+
+            await _offers.ReplaceOneAsync(x => x.Id == offerId, offer); // <-- BU SATIR ZORUNLU!!
+
+            return "Teklif başarıyla firmaya atandı.";
+        }
+
 
     }
 }

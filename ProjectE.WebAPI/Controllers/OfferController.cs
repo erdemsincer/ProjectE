@@ -54,5 +54,16 @@ namespace ProjectE.WebAPI.Controllers
             var offers = await _offerService.GetOffersForCompanyAsync(companyId, company.IsAdvertiser);
             return Ok(offers);
         }
+
+        [Authorize]
+        [HttpPost("assign")]
+        public async Task<IActionResult> AssignCompanyToOffer([FromBody] AssignCompanyToOfferDto dto)
+        {
+            var companyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var result = await _offerService.AssignCompanyToOfferAsync(dto.OfferId, companyId);
+            return Ok(new { message = result });
+        }
+
     }
 }
