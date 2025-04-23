@@ -27,7 +27,7 @@ namespace ProjectE.Web.Controllers
             var client = _http.CreateClient();
             var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("https://localhost:7034/api/CompanyAuth/login", content);
+            var response = await client.PostAsync("https://localhost:7034/api/Company/login", content);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["Error"] = "Firma girişi başarısız!";
