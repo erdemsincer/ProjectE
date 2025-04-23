@@ -9,5 +9,6 @@
         public bool IsApprovedByAdmin { get; set; }
         public string? CompanyId { get; set; } // Firma teklif aldıysa
         public DateTime CreatedAt { get; set; }
+        public string Status { get; set; }
     }
 }

@@ -100,7 +100,8 @@ namespace ProjectE.Business.Concrete
                 Description = o.Description,
                 Budget = o.Budget,
                 IsApprovedByAdmin = o.IsApprovedByAdmin,
-                CreatedAt = o.CreatedAt
+                CreatedAt = o.CreatedAt,
+
             }).ToList();
         }
 
@@ -132,6 +133,8 @@ namespace ProjectE.Business.Concrete
 
             return dto.IsApproved ? "Teklif onaylandı." : "Teklif reddedildi.";
         }
+
+
 
 
 

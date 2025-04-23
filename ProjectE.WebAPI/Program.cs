@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ProjectE.Business.Abstract;
 using ProjectE.Business.Background;
@@ -44,21 +44,29 @@ builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDbSettings"));
 builder.Services.AddSingleton<MongoDbContext>();
 
-// DI
+// ✅ CORS EKLENDİ
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://localhost:3001")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // 🟡 BAZEN GEREKİR
+    });
+});
+
+// Dependency Injections
 builder.Services.AddScoped<IAuthService, AuthManager>();
 builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<ICompanyAuthService, CompanyAuthManager>();
 builder.Services.AddScoped<ICompanyService, CompanyManager>();
 builder.Services.AddScoped<IOfferService, OfferManager>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionManager>();
-builder.Services.AddHostedService<SubscriptionExpirationService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackManager>();
+builder.Services.AddHostedService<SubscriptionExpirationService>();
 
-
-
-
-
-// Swagger with JWT Support
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -69,7 +77,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "JWT Token'�n�z� girin. Format: Bearer {token}"
+        Description = "JWT Token'ınızı girin. Format: Bearer {token}"
     });
 
     options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
@@ -92,7 +100,6 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -101,7 +108,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // <-- EKLEND�
+// ✅ CORS MIDDLEWARE UYGULANDI
+app.UseCors("AllowFrontend");
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

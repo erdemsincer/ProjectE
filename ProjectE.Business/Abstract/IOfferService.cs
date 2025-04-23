@@ -12,6 +12,9 @@ namespace ProjectE.Business.Abstract
         Task<List<ResultOfferDto>> GetOffersByCompanyAsync(string companyId);
         Task<string> ApproveOfferAsync(ApproveOfferDto dto);
 
+        
+
+
 
 
 

@@ -13,11 +13,11 @@ namespace ProjectE.Business.Concrete
         private readonly IMongoCollection<Offer> _offers;
         private readonly IMongoCollection<FeedbackReaction> _reactions;
 
-        public FeedbackManager(MongoDbContext context, IMongoCollection<FeedbackReaction> reactions)
+        public FeedbackManager(MongoDbContext context)
         {
             _feedbacks = context.Feedbacks;
             _offers = context.Offers;
-            _reactions = reactions;
+            _reactions = context.FeedbackReactions;
         }
 
         public async Task<string> CreateFeedbackAsync(CreateFeedbackDto dto, string userId)
