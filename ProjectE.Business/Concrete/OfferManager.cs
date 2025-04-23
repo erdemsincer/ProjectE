@@ -48,10 +48,9 @@ namespace ProjectE.Business.Concrete
 
         public async Task<List<ResultOfferDto>> GetOffersForCompanyAsync(string companyId, bool isAdvertiser)
         {
-            // ✅ Sadece admin onaylı teklifleri getir
-            var offers = await _offers.Find(x => x.IsApprovedByAdmin).ToListAsync();
+            // ✅ Sadece onaylı ve firmaya atanmamış teklifler
+            var offers = await _offers.Find(x => x.IsApprovedByAdmin && x.CompanyId == null).ToListAsync();
 
-            // Reklamlı firmalara göre sıralama
             var sortedOffers = isAdvertiser
                 ? offers.OrderByDescending(x => x.CreatedAt).ToList()
                 : offers.OrderBy(x => x.CreatedAt).ToList();
