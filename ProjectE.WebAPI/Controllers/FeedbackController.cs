@@ -77,6 +77,13 @@ namespace ProjectE.WebAPI.Controllers
             var feedbacks = await _feedbackService.GetFeedbacksByUserAsync(userId);
             return Ok(feedbacks);
         }
+        [Authorize]
+        [HttpPost("react")]
+        public async Task<IActionResult> ReactToFeedback([FromBody] LikeFeedbackDto dto)
+        {
+            var result = await _feedbackService.AddReactionToFeedbackAsync(dto);
+            return Ok(new { message = result });
+        }
 
 
 

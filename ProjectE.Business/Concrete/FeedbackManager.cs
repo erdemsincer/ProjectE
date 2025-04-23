@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using ProjectE.Business.Abstract;
 using ProjectE.DataAccess.Context;
+using ProjectE.DTO.CompanyDtos;
 using ProjectE.DTO.FeedbackDtos;
 using ProjectE.Entity.Entities;
 
@@ -158,6 +159,38 @@ namespace ProjectE.Business.Concrete
                 FeedbackReply = f.FeedbackReply
             }).ToList();
         }
+        public async Task<CompanyStatsDto> GetCompanyStatsAsync(string companyId)
+        {
+            var feedbacks = await _feedbacks.Find(x => x.CompanyId == companyId).ToListAsync();
+
+            var average = feedbacks.Any()
+                ? Math.Round(feedbacks.Average(x => x.Rating), 1)
+                : 0;
+
+            return new CompanyStatsDto
+            {
+                CompanyId = companyId,
+                AverageRating = average,
+                FeedbackCount = feedbacks.Count
+            };
+        }
+
+        public async Task<string> AddReactionToFeedbackAsync(LikeFeedbackDto dto)
+        {
+            var feedback = await _feedbacks.Find(x => x.Id == dto.FeedbackId).FirstOrDefaultAsync();
+
+            if (feedback == null)
+                return "Yorum bulunamadı.";
+
+            var update = dto.IsLike
+                ? Builders<Feedback>.Update.Inc(x => x.LikeCount, 1)
+                : Builders<Feedback>.Update.Inc(x => x.DislikeCount, 1);
+
+            await _feedbacks.UpdateOneAsync(x => x.Id == dto.FeedbackId, update);
+            return dto.IsLike ? "Beğenildi olarak işaretlendi." : "Yararsız olarak işaretlendi.";
+        }
+
+
 
 
 

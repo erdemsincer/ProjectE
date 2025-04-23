@@ -1,4 +1,5 @@
-﻿using ProjectE.DTO.FeedbackDtos;
+﻿using ProjectE.DTO.CompanyDtos;
+using ProjectE.DTO.FeedbackDtos;
 
 namespace ProjectE.Business.Abstract
 {
@@ -13,6 +14,9 @@ namespace ProjectE.Business.Abstract
         Task<string> DeleteFeedbackByUserAsync(string feedbackId, string userId);
         Task<List<ResultFeedbackDto>> GetFeedbacksByUserAsync(string userId);
         Task<List<ResultFeedbackDto>> GetAllFeedbacksAsync();
+        Task<CompanyStatsDto> GetCompanyStatsAsync(string companyId);
+        Task<string> AddReactionToFeedbackAsync(LikeFeedbackDto dto);
+
 
 
 

@@ -13,11 +13,13 @@ namespace ProjectE.WebAPI.Controllers
     {
         private readonly ICompanyAuthService _companyAuthService;
         private readonly ICompanyService _companyService;
+        private readonly IFeedbackService _feedbackService;
 
-        public CompanyController(ICompanyAuthService companyAuthService, ICompanyService companyService)
+        public CompanyController(ICompanyAuthService companyAuthService, ICompanyService companyService, IFeedbackService feedbackService)
         {
             _companyAuthService = companyAuthService;
             _companyService = companyService;
+            _feedbackService = feedbackService;
         }
 
         [HttpPost("register")]
@@ -64,6 +66,14 @@ namespace ProjectE.WebAPI.Controllers
             var companies = await _companyService.GetAllCompaniesSortedAsync();
             return Ok(companies);
         }
+        [AllowAnonymous]
+        [HttpGet("{companyId}/stats")]
+        public async Task<IActionResult> GetCompanyStats(string companyId)
+        {
+            var stats = await _feedbackService.GetCompanyStatsAsync(companyId);
+            return Ok(stats);
+        }
+
 
     }
 }
