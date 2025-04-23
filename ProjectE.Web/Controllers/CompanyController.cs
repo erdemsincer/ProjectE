@@ -8,11 +8,11 @@ namespace ProjectE.Web.Controllers
 {
     public class CompanyController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactory _http;
 
         public CompanyController(IHttpClientFactory httpClientFactory)
         {
-            _httpClientFactory = httpClientFactory;
+            _http = httpClientFactory;
         }
 
         [HttpGet]
@@ -24,15 +24,13 @@ namespace ProjectE.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginCompanyDto dto)
         {
-            var client = _httpClientFactory.CreateClient();
-            var json = JsonConvert.SerializeObject(dto);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var client = _http.CreateClient();
+            var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("https://localhost:7034/api/companyauth/login", content);
-
+            var response = await client.PostAsync("https://localhost:7034/api/CompanyAuth/login", content);
             if (!response.IsSuccessStatusCode)
             {
-                TempData["Error"] = "Giriş başarısız.";
+                TempData["Error"] = "Firma girişi başarısız!";
                 return View();
             }
 
@@ -49,7 +47,7 @@ namespace ProjectE.Web.Controllers
             if (HttpContext.Session.GetString("token") == null)
                 return RedirectToAction("Login");
 
-            return View(); // → Views/Company/Panel.cshtml
+            return View();
         }
 
         public IActionResult Logout()

@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Firma Paneli";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2>📊 Firma Kontrol Paneli</h2>
+        <p class="lead">Yorumlarınızı ve tekliflerinizi buradan yönetebilirsiniz.</p>
+
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="/Offer/Incoming" class="btn btn-outline-primary">
+                <i class="fa-solid fa-briefcase"></i> Gelen Teklifler
+            </a>
+            <a href="/Feedback/CompanyPanel" class="btn btn-outline-success">
+                <i class="fa-solid fa-star"></i> Yorumlar / Puanlar
+            </a>
+            <a href="/Company/Logout" class="btn btn-outline-danger">
+                <i class="fa-solid fa-right-from-bracket"></i> Çıkış
+            </a>
+        </div>
+    </div>
+</div>
