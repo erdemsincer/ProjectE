@@ -8,6 +8,7 @@
         public string CompanyId { get; set; }
         public string Comment { get; set; }
         public double AverageRating { get; set; }
+        public string FeedbackReply { get; set; } // ✅ EKLENDİ
 
         public int Rating { get; set; }
         public DateTime CreatedAt { get; set; }

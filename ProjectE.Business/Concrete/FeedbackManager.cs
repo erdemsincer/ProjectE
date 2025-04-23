@@ -55,7 +55,8 @@ namespace ProjectE.Business.Concrete
                 CompanyId = f.CompanyId,
                 Comment = f.Comment,
                 Rating = f.Rating,
-                CreatedAt = f.CreatedAt
+                CreatedAt = f.CreatedAt,
+                FeedbackReply = f.FeedbackReply
             }).ToList();
         }
 
