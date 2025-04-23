@@ -12,10 +12,12 @@ namespace ProjectE.WebAPI.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IOfferService _offerService;
+        private readonly IFeedbackService _feedbackService;
 
-        public AdminController(IOfferService offerService)
+        public AdminController(IOfferService offerService, IFeedbackService feedbackService)
         {
             _offerService = offerService;
+            _feedbackService = feedbackService;
         }
 
         [HttpPut("approve-offer")]
@@ -24,5 +26,14 @@ namespace ProjectE.WebAPI.Controllers
             var result = await _offerService.ApproveOfferAsync(dto);
             return Ok(new { message = result });
         }
+
+        [Authorize] // ileride admin rol kontrolü eklenebilir
+        [HttpDelete("delete-feedback/{feedbackId}")]
+        public async Task<IActionResult> DeleteFeedback(string feedbackId)
+        {
+            var result = await _feedbackService.DeleteFeedbackByIdAsync(feedbackId);
+            return Ok(new { message = result });
+        }
+
     }
 }

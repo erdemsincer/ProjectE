@@ -69,5 +69,15 @@ namespace ProjectE.Business.Concrete
             return Math.Round(feedbacks.Average(x => x.Rating), 1); // 1 ondalık basamakla
         }
 
+        public async Task<string> DeleteFeedbackByIdAsync(string feedbackId)
+        {
+            var result = await _feedbacks.DeleteOneAsync(x => x.Id == feedbackId);
+
+            return result.DeletedCount > 0
+                ? "Yorum silindi."
+                : "Yorum bulunamadı.";
+        }
+
+
     }
 }
