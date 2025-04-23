@@ -99,6 +99,24 @@ namespace ProjectE.Business.Concrete
             }).ToList();
         }
 
+        public async Task<List<ResultOfferDto>> GetOffersByCompanyAsync(string companyId)
+        {
+            var offers = await _offers.Find(x => x.CompanyId == companyId).ToListAsync();
+
+            return offers.Select(o => new ResultOfferDto
+            {
+                Id = o.Id,
+                UserId = o.UserId,
+                CompanyId = o.CompanyId,
+                Title = o.Title,
+                Description = o.Description,
+                Budget = o.Budget,
+                IsApprovedByAdmin = o.IsApprovedByAdmin,
+                CreatedAt = o.CreatedAt
+            }).ToList();
+        }
+
+
 
 
     }

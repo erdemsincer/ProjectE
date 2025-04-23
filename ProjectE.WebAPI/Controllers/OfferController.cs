@@ -74,6 +74,16 @@ namespace ProjectE.WebAPI.Controllers
             return Ok(offers);
         }
 
+        [Authorize]
+        [HttpGet("assigned-to-me")]
+        public async Task<IActionResult> GetAssignedOffers()
+        {
+            var companyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var offers = await _offerService.GetOffersByCompanyAsync(companyId);
+            return Ok(offers);
+        }
+
+
 
     }
 }
