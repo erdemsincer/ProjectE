@@ -10,6 +10,8 @@ namespace ProjectE.Business.Abstract
         Task<string> AssignCompanyToOfferAsync(string offerId, string companyId);
         Task<List<ResultOfferDto>> GetOffersByUserAsync(string userId);
         Task<List<ResultOfferDto>> GetOffersByCompanyAsync(string companyId);
+        Task<string> ApproveOfferAsync(ApproveOfferDto dto);
+
 
 
 

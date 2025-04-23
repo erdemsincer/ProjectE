@@ -54,5 +54,27 @@ namespace ProjectE.Business.Concrete
                 IsActive = subscription.IsActive
             };
         }
+
+        public async Task CheckAndExpireSubscriptionsAsync()
+        {
+            var now = DateTime.UtcNow;
+
+            // Süresi dolmuş aktif abonelikleri bul
+            var expiredSubscriptions = await _subscriptions
+                .Find(x => x.IsActive && x.ExpireDate < now)
+                .ToListAsync();
+
+            foreach (var sub in expiredSubscriptions)
+            {
+                // 1. Aboneliği pasifleştir
+                var updateSub = Builders<Subscription>.Update.Set(x => x.IsActive, false);
+                await _subscriptions.UpdateOneAsync(x => x.Id == sub.Id, updateSub);
+
+                // 2. Firma reklamlı değil yapılır
+                var updateFirm = Builders<Company>.Update.Set(x => x.IsAdvertiser, false);
+                await _companies.UpdateOneAsync(x => x.Id == sub.CompanyId, updateFirm);
+            }
+        }
+
     }
 }

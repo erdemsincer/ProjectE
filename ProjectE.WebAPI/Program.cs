@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ProjectE.Business.Abstract;
+using ProjectE.Business.Background;
 using ProjectE.Business.Concrete;
 using ProjectE.Business.Helpers;
 using ProjectE.Business.Settings;
@@ -50,7 +51,7 @@ builder.Services.AddScoped<ICompanyAuthService, CompanyAuthManager>();
 builder.Services.AddScoped<ICompanyService, CompanyManager>();
 builder.Services.AddScoped<IOfferService, OfferManager>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionManager>();
-
+builder.Services.AddHostedService<SubscriptionExpirationService>();
 
 
 

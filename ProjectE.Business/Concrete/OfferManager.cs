@@ -48,12 +48,15 @@ namespace ProjectE.Business.Concrete
 
         public async Task<List<ResultOfferDto>> GetOffersForCompanyAsync(string companyId, bool isAdvertiser)
         {
-            var offers = await _offers.Find(_ => true).ToListAsync();
+            // ✅ Sadece admin onaylı teklifleri getir
+            var offers = await _offers.Find(x => x.IsApprovedByAdmin).ToListAsync();
 
-            // Reklamlı firma ise tüm teklifleri öncelikli görebilir
-            // (şimdilik sıralama yapılmıyor, ama mantık kuruldu)
+            // Reklamlı firmalara göre sıralama
+            var sortedOffers = isAdvertiser
+                ? offers.OrderByDescending(x => x.CreatedAt).ToList()
+                : offers.OrderBy(x => x.CreatedAt).ToList();
 
-            return offers.Select(o => new ResultOfferDto
+            return sortedOffers.Select(o => new ResultOfferDto
             {
                 Id = o.Id,
                 UserId = o.UserId,
@@ -65,6 +68,8 @@ namespace ProjectE.Business.Concrete
                 CreatedAt = o.CreatedAt
             }).ToList();
         }
+
+
 
         public async Task<string> AssignCompanyToOfferAsync(string offerId, string companyId)
         {
@@ -115,6 +120,19 @@ namespace ProjectE.Business.Concrete
                 CreatedAt = o.CreatedAt
             }).ToList();
         }
+
+        public async Task<string> ApproveOfferAsync(ApproveOfferDto dto)
+        {
+            var offer = await _offers.Find(x => x.Id == dto.OfferId).FirstOrDefaultAsync();
+            if (offer == null)
+                return "Teklif bulunamadı.";
+
+            var update = Builders<Offer>.Update.Set(x => x.IsApprovedByAdmin, dto.IsApproved);
+            await _offers.UpdateOneAsync(x => x.Id == dto.OfferId, update);
+
+            return dto.IsApproved ? "Teklif onaylandı." : "Teklif reddedildi.";
+        }
+
 
 
 

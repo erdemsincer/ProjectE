@@ -6,5 +6,7 @@ namespace ProjectE.Business.Abstract
     {
         Task<string> StartSubscriptionAsync(CreateSubscriptionDto dto, string companyId);
         Task<ResultSubscriptionDto> GetMySubscriptionAsync(string companyId);
+        Task CheckAndExpireSubscriptionsAsync();
+
     }
 }

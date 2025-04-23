@@ -38,5 +38,14 @@ namespace ProjectE.WebAPI.Controllers
 
             return Ok(subscription);
         }
+
+        [Authorize]
+        [HttpPost("expire-check")]
+        public async Task<IActionResult> CheckAndExpire()
+        {
+            await _subscriptionService.CheckAndExpireSubscriptionsAsync();
+            return Ok(new { message = "Kontrol tamamlandı. Süresi biten abonelikler kapatıldı." });
+        }
+
     }
 }
