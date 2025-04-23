@@ -16,6 +16,9 @@ namespace ProjectE.Business.Abstract
         Task<List<ResultFeedbackDto>> GetAllFeedbacksAsync();
         Task<CompanyStatsDto> GetCompanyStatsAsync(string companyId);
         Task<string> AddReactionToFeedbackAsync(LikeFeedbackDto dto);
+        Task<CompanyFeedbackPanelDto> GetPanelDataForCompanyAsync(string companyId);
+        Task<string> AddReactionToFeedbackAsync(LikeFeedbackDto dto, string userId);
+
 
 
 

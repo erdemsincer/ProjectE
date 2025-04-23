@@ -81,9 +81,22 @@ namespace ProjectE.WebAPI.Controllers
         [HttpPost("react")]
         public async Task<IActionResult> ReactToFeedback([FromBody] LikeFeedbackDto dto)
         {
-            var result = await _feedbackService.AddReactionToFeedbackAsync(dto);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var result = await _feedbackService.AddReactionToFeedbackAsync(dto, userId);
+
             return Ok(new { message = result });
         }
+
+        [Authorize]
+        [HttpGet("for-company")]
+        public async Task<IActionResult> GetCompanyFeedbackPanel()
+        {
+            var companyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var data = await _feedbackService.GetPanelDataForCompanyAsync(companyId);
+            return Ok(data);
+        }
+
 
 
 

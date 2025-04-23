@@ -11,11 +11,13 @@ namespace ProjectE.Business.Concrete
     {
         private readonly IMongoCollection<Feedback> _feedbacks;
         private readonly IMongoCollection<Offer> _offers;
+        private readonly IMongoCollection<FeedbackReaction> _reactions;
 
-        public FeedbackManager(MongoDbContext context)
+        public FeedbackManager(MongoDbContext context, IMongoCollection<FeedbackReaction> reactions)
         {
             _feedbacks = context.Feedbacks;
             _offers = context.Offers;
+            _reactions = reactions;
         }
 
         public async Task<string> CreateFeedbackAsync(CreateFeedbackDto dto, string userId)
@@ -196,6 +198,70 @@ namespace ProjectE.Business.Concrete
             await _feedbacks.UpdateOneAsync(x => x.Id == dto.FeedbackId, update);
             return dto.IsLike ? "Beğenildi olarak işaretlendi." : "Yararsız olarak işaretlendi.";
         }
+        public async Task<CompanyFeedbackPanelDto> GetPanelDataForCompanyAsync(string companyId)
+        {
+            var feedbacks = await _feedbacks
+                .Find(x => x.CompanyId == companyId)
+                .SortByDescending(x => x.CreatedAt)
+                .ToListAsync();
+
+            var avg = feedbacks.Any() ? Math.Round(feedbacks.Average(x => x.Rating), 1) : 0;
+
+            return new CompanyFeedbackPanelDto
+            {
+                AverageRating = avg,
+                FeedbackCount = feedbacks.Count,
+                Feedbacks = feedbacks.Select(f => new ResultFeedbackDto
+                {
+                    Id = f.Id,
+                    OfferId = f.OfferId,
+                    UserId = f.UserId,
+                    CompanyId = f.CompanyId,
+                    Comment = f.Comment,
+                    Rating = f.Rating,
+                    CreatedAt = f.CreatedAt,
+                    FeedbackReply = f.FeedbackReply,
+                    LikeCount = f.LikeCount,
+                    DislikeCount = f.DislikeCount
+                }).ToList()
+            };
+        }
+        public async Task<string> AddReactionToFeedbackAsync(LikeFeedbackDto dto, string userId)
+        {
+            var feedback = await _feedbacks.Find(x => x.Id == dto.FeedbackId).FirstOrDefaultAsync();
+
+            if (feedback == null)
+                return "Yorum bulunamadı.";
+
+            // Aynı kullanıcı aynı yoruma daha önce oy vermiş mi?
+            var existing = await _reactions
+                .Find(x => x.FeedbackId == dto.FeedbackId && x.UserId == userId)
+                .FirstOrDefaultAsync();
+
+            if (existing != null)
+                return "Bu yoruma daha önce tepki verdiniz.";
+
+            // Tepkiyi kaydet
+            var reaction = new FeedbackReaction
+            {
+                FeedbackId = dto.FeedbackId,
+                UserId = userId,
+                IsLike = dto.IsLike
+            };
+            await _reactions.InsertOneAsync(reaction);
+
+            // Sayacı güncelle
+            var update = dto.IsLike
+                ? Builders<Feedback>.Update.Inc(x => x.LikeCount, 1)
+                : Builders<Feedback>.Update.Inc(x => x.DislikeCount, 1);
+
+            await _feedbacks.UpdateOneAsync(x => x.Id == dto.FeedbackId, update);
+
+            return dto.IsLike ? "Beğenildi olarak işaretlendi." : "Yararsız olarak işaretlendi.";
+        }
+
+
+
 
 
 

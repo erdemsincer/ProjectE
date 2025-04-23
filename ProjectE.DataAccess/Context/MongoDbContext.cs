@@ -25,5 +25,7 @@ namespace ProjectE.DataAccess.Context
         public IMongoCollection<Advertisement> Advertisements => _database.GetCollection<Advertisement>("Advertisements");
         public IMongoCollection<Rating> Ratings => _database.GetCollection<Rating>("Ratings");
         public IMongoCollection<Feedback> Feedbacks =>_database.GetCollection<Feedback>("Feedbacks");
+        public IMongoCollection<FeedbackReaction> FeedbackReactions =>_database.GetCollection<FeedbackReaction>("FeedbackReactions");
+
     }
 }
