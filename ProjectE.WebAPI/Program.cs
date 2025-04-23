@@ -49,6 +49,8 @@ builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<ICompanyAuthService, CompanyAuthManager>();
 builder.Services.AddScoped<ICompanyService, CompanyManager>();
 builder.Services.AddScoped<IOfferService, OfferManager>();
+builder.Services.AddScoped<ISubscriptionService, SubscriptionManager>();
+
 
 
 

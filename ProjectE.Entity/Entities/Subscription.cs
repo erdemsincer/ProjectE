@@ -13,7 +13,7 @@ namespace ProjectE.Entity.Entities
         public string PlanName { get; set; } // Basic, Pro, Premium
 
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime ExpireDate { get; set; }
 
         public bool IsActive { get; set; } = true;
     }
