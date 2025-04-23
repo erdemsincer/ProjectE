@@ -46,7 +46,12 @@ namespace ProjectE.Business.Concrete
 
         public async Task<List<ResultFeedbackDto>> GetFeedbacksByCompanyIdAsync(string companyId)
         {
-            var feedbacks = await _feedbacks.Find(x => x.CompanyId == companyId).ToListAsync();
+            var feedbacks = await _feedbacks
+                .Find(x => x.CompanyId == companyId)
+                .SortByDescending(x => x.LikeCount) // ✅ Sıralama buradan başlar
+                .ThenByDescending(x => x.Rating)
+                .ThenByDescending(x => x.CreatedAt)
+                .ToListAsync();
 
             return feedbacks.Select(f => new ResultFeedbackDto
             {
@@ -57,7 +62,9 @@ namespace ProjectE.Business.Concrete
                 Comment = f.Comment,
                 Rating = f.Rating,
                 CreatedAt = f.CreatedAt,
-                FeedbackReply = f.FeedbackReply
+                FeedbackReply = f.FeedbackReply,
+                LikeCount = f.LikeCount,
+                DislikeCount = f.DislikeCount
             }).ToList();
         }
 

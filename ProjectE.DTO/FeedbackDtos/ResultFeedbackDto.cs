@@ -9,6 +9,8 @@
         public string Comment { get; set; }
         public double AverageRating { get; set; }
         public string FeedbackReply { get; set; } // ✅ EKLENDİ
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
 
         public int Rating { get; set; }
         public DateTime CreatedAt { get; set; }
